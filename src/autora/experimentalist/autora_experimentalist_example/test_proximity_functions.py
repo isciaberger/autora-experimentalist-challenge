@@ -7,6 +7,7 @@ from proximity_functions import (
 )
 
 
+
 class TestProximityFunctions(unittest.TestCase):
 
     def setUp(self):
