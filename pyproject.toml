@@ -17,7 +17,9 @@ dependencies = [
     "autora[all-experimentalists]",
     "matplotlib",
     "dataclasses",
-    "typing"
+    "typing",
+    "scipy",
+    "numpy"
 ]
 
 [project.optional-dependencies]
