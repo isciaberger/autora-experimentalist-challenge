@@ -34,7 +34,7 @@ def dist2prox_via_inverse(distances, epsilon=1e-5):
 def proximity_gaussian_kernels(conditions: np.ndarray, candidates: np.ndarray, sigma:float=1., metric: str='euclidean') -> np.ndarray:
     """
     Calculate the minimum Euclidean distance between two vectors.
-
+git
     Args:
         conditions: Already existing datapoints, i.e. already sampled, shape (n, d).
         candidates: Sampled candidates for the next experiment, shape (c, d).
@@ -69,4 +69,43 @@ def reweight_flavour(proximity, temperatur=1):
     probs = np.exp(scaled) / np.sum(np.exp(scaled))
 
     return probs
+
+
+
+def perform_sampling(conditions, candidates, num_samples=1,
+                   temperature=1.0, sigma=1.0, 
+                   random_state=None):
+    """
+    Sample candidates based on their proximity to already sampled conditions.
+
+    Args:
+        conditions (np.ndarray): Already existing datapoints
+        candidates (np.ndarray): Candidates
+        num_samples (int): Number of points to sample
+        temperature (float): Temperature for softmax reweighting
+        sigma (float): Sigma for Gaussian kernel proximity
+        random_state (int or None): Random seed for reproducibility
+
+    Returns:
+        np.ndarray: Selected candidate points
+    """
+    rng = np.random.default_rng(random_state)
+
+    # Compute proximity
+    distances = min_euclidean_distance(conditions, candidates, dist2prox=None)
+    proximities_inverse = dist2prox_via_inverse(distances)
+    proximities_gaussian = proximity_gaussian_kernels(conditions, candidates, sigma=sigma)
+    
+    # Convert to probability distribution
+    probs_gaussian = reweight_flavour(proximities_gaussian, temperatur=temperature)
+    probs_inverse = reweight_flavour(proximities_inverse, temperatur=temperature)
+
+    # decide which proximity measure will be used?
+
+    # Sample from candidates
+    chosen_indices_gaussian = rng.choice(len(candidates), size=num_samples, replace=False, p=probs_gaussian)
+    chosen_indices_inverse = rng.choice(len(candidates), size=num_samples, replace=False, p=probs_inverse)
+
+    return candidates[chosen_indices_gaussian], candidates[chosen_indices_inverse]
+
 
