@@ -50,3 +50,23 @@ def proximity_gaussian_kernels(conditions: np.ndarray, candidates: np.ndarray, s
     gaussian_probabilities = gaussian_kernel(distance_matrix, sigma)  # shape (c, n)
     total_probabilities = np.sum(gaussian_probabilities, axis=1)  # shape (c,)
     return total_probabilities
+
+
+def reweight_flavour(proximity, temperatur=1):
+    """
+    Converts a vector of proximity scores into a probability distribution 
+    using a temperature-scaled Softmax.
+
+    Args:
+        proximity : proximity of candidates
+        temperatur : temperature
+
+    Returns:
+        np.ndarray: Probability distribution over the items 
+    """
+
+    scaled= proximity / temperatur
+    probs = np.exp(scaled) / np.sum(np.exp(scaled))
+
+    return probs
+
