@@ -4,11 +4,13 @@ Example Experimentalist
 import numpy as np
 from autora.experimentalist.autora_experimentalist_example.proximity_functions import dist2prox_via_inverse, min_euclidean_distance, proximity_gaussian_kernels, reweight_flavour
 
-def sample(
-    conditions: Union[pd.DataFrame, np.ndarray],
-    models: List,
-    reference_conditions: Union[pd.DataFrame, np.ndarray],
-    num_samples: int = 1) -> pd.DataFrame:
+def sample(experiment_data,
+            models_bms,
+            models_lr,
+            models_polyr,
+            all_conditions,
+            num_samples=1,
+            random_state=None)
     """
     Sample new conditions based on existing conditions and models.
     Args:
@@ -21,10 +23,13 @@ def sample(
 
     """
     args_dict = {
-        "conditions": conditions,
-        "models": models,
-        "reference_conditions": reference_conditions,
-        "num_samples": num_samples
+        "experiment_data": experiment_data,
+        "models_bms": models_bms,
+        "models_lr": models_lr,
+        "models_polyr": models_polyr,
+        "all_conditions": all_conditions,
+        "num_samples": num_samples,
+        "random_state": random_state
     }
     # Log the sampling process
     with open('sample_log.txt', 'a') as f:
