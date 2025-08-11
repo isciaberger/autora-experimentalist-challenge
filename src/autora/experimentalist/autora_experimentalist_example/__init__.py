@@ -5,7 +5,7 @@ import numpy as np
 from autora.experimentalist.autora_experimentalist_example.proximity_functions import dist2prox_via_inverse, min_euclidean_distance, proximity_gaussian_kernels, reweight_flavour
 
 
-def sample(conditions, candidates, sampler="inverse", num_samples=1,
+def sample_flavour(conditions, candidates, sampler="inverse", num_samples=1,
                    temperature=1.0, sigma=1.0, 
                    random_state=None):
     """
