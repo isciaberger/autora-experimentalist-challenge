@@ -4,8 +4,35 @@ Example Experimentalist
 import numpy as np
 from autora.experimentalist.autora_experimentalist_example.proximity_functions import dist2prox_via_inverse, min_euclidean_distance, proximity_gaussian_kernels, reweight_flavour
 
+def sample(
+    conditions: Union[pd.DataFrame, np.ndarray],
+    models: List,
+    reference_conditions: Union[pd.DataFrame, np.ndarray],
+    num_samples: int = 1) -> pd.DataFrame:
+    """
+    Sample new conditions based on existing conditions and models.
+    Args:
+        conditions:
+        models:
+        reference_conditions:
+        num_samples:
 
-def sample(conditions, candidates, sampler="inverse", num_samples=1,
+    Returns:
+
+    """
+    args_dict = {
+        "conditions": conditions,
+        "models": models,
+        "reference_conditions": reference_conditions,
+        "num_samples": num_samples
+    }
+    # Log the sampling process
+    with open('sample_log.txt', 'a') as f:
+        for key, value in args_dict.items():
+            f.write(f"{key}: {value}\n")
+
+
+def sample_flavour(conditions, candidates, sampler="inverse", num_samples=1,
                    temperature=1.0, sigma=1.0, 
                    random_state=None):
     """
