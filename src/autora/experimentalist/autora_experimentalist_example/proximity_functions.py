@@ -3,6 +3,7 @@ import scipy
 
 
 def min_euclidean_distance(conditions: np.ndarray, candidates: np.ndarray, dist2prox: callable, metric: str='euclidean') -> np.ndarray:
+
     """
     Calculate the minimum Euclidean distance between two vectors.
 
@@ -14,9 +15,16 @@ def min_euclidean_distance(conditions: np.ndarray, candidates: np.ndarray, dist2
         distances: A 1d array including the distance to the closest condition datapoint for each candidate.
 
     """
-    distance_matrix = scipy.spatial.distance.cdist(candidates, conditions, metric=metric) # shape (c, n)
-    min_distances = np.min(distance_matrix, axis=1)  # shape (c,)
+    conditions = np.atleast_2d(conditions)
+    candidates = np.atleast_2d(candidates)
+
+    if conditions.shape[1] != candidates.shape[1]:
+        raise ValueError(f"Shape mismatch: conditions.shape = {conditions.shape}, candidates.shape = {candidates.shape}")
+
+    distance_matrix = scipy.spatial.distance.cdist(candidates, conditions, metric=metric)
+    min_distances = np.min(distance_matrix, axis=1)
     return min_distances
+
 
 def dist2prox_via_inverse(distances, epsilon=1e-5):
     """
@@ -31,7 +39,7 @@ def dist2prox_via_inverse(distances, epsilon=1e-5):
     """
     return 1 / (distances + epsilon)  # shape (c,)
 
-def proximity_gaussian_kernels(conditions: np.ndarray, candidates: np.ndarray, sigma:float=1., metric: str='euclidean') -> np.ndarray:
+def proximity_gaussian_kernels(conditions: np.ndarray, candidates: np.ndarray, sigma: float = 1., metric: str = 'euclidean') -> np.ndarray:
     """
     Calculate the minimum Euclidean distance between two vectors.
 
@@ -42,13 +50,19 @@ def proximity_gaussian_kernels(conditions: np.ndarray, candidates: np.ndarray, s
     Returns:
         distances: A 1d array including the distance to the closest condition datapoint for each candidate.
     """
-    distance_matrix = scipy.spatial.distance.cdist(candidates, conditions, metric=metric)  # shape (c, n)
+    conditions = np.atleast_2d(conditions)
+    candidates = np.atleast_2d(candidates)
+
+    if conditions.shape[1] != candidates.shape[1]:
+        raise ValueError(f"Shape mismatch: conditions.shape = {conditions.shape}, candidates.shape = {candidates.shape}")
+
+    distance_matrix = scipy.spatial.distance.cdist(candidates, conditions, metric=metric)
+
     def gaussian_kernel(x_dist, sigma):
-        #gaussian kernel, x_dist is the distance between mu and x
-        #returns the probability of x given x_dist and sigma
         return np.exp(-0.5 * (x_dist / sigma) ** 2)
-    gaussian_probabilities = gaussian_kernel(distance_matrix, sigma)  # shape (c, n)
-    total_probabilities = np.sum(gaussian_probabilities, axis=1)  # shape (c,)
+
+    gaussian_probabilities = gaussian_kernel(distance_matrix, sigma)
+    total_probabilities = np.sum(gaussian_probabilities, axis=1)
     return total_probabilities
 
 
