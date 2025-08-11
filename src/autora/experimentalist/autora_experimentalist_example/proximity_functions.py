@@ -34,7 +34,6 @@ def dist2prox_via_inverse(distances, epsilon=1e-5):
 def proximity_gaussian_kernels(conditions: np.ndarray, candidates: np.ndarray, sigma:float=1., metric: str='euclidean') -> np.ndarray:
     """
     Calculate the minimum Euclidean distance between two vectors.
-git
     Args:
         conditions: Already existing datapoints, i.e. already sampled, shape (n, d).
         candidates: Sampled candidates for the next experiment, shape (c, d).
