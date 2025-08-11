@@ -4,6 +4,7 @@ Example Experimentalist
 import numpy as np
 from autora.experimentalist.autora_experimentalist_example.proximity_functions import dist2prox_via_inverse, min_euclidean_distance, proximity_gaussian_kernels, reweight_flavour
 from autora.state import Delta
+from scipy.special import softmax
 
 def sample(experiment_data,
             models_bms,
@@ -51,7 +52,8 @@ def sample(experiment_data,
     0.975106
     """
     #take all the data except the first column, which is the index
-    conditions = experiment_data.iloc[:, 1:].values  # Convert to numpy array
+    conditions = experiment_data.iloc[:, 1:-1].values  # Convert to numpy array
+    print("conditions:", conditions.shape)
     # all_conditions is a pandas dataframe with the following columns:
     """
     all_conditions:      P_asymptotic  trial
@@ -68,13 +70,14 @@ def sample(experiment_data,
     9999           0.5  100.0
     """
     candidates = all_conditions.iloc[:, 1:].values  # Convert to numpy array
+    print("candidates:", candidates.shape)
     # Sample candidates based on proximity to existing conditions
     #conditions = None
     #candidates = None #requires ndarray of shape candidates, dimensions
     num_samples = 1
     temperature = 1.
     #sampler = None #, "inverse"  # or "gaussian"
-    sampler = 'gaussian'  # or "inverse"
+    sampler = 'inverse'  # 'gaussian' or "inverse"
     sigma = 1.0
     random_state = 1312  # Set a random state for reproducibility
     alg_proposed_experiments = sample_flavour(
@@ -87,7 +90,7 @@ def sample(experiment_data,
         random_state=random_state
     )
     print(f'!!!!!!!!!!!!!!!!!!!!!!1{alg_proposed_experiments}!!!!!!!!!!!!!!!!!!!!!!!!')
-    return Delta(conditions=alg_proposed_experiments)
+    return alg_proposed_experiments
 
 
 def sample_flavour(conditions, candidates, sampler="inverse", num_samples=1,
@@ -121,10 +124,13 @@ def sample_flavour(conditions, candidates, sampler="inverse", num_samples=1,
     
     # Convert to probability distribution
     probs = reweight_flavour(proximities, temperatur=temperature)
+    print(probs.shape)
+    probs = np.nan_to_num(probs)
 
     # decide which proximity measure will be used?
 
     # Sample from candidates
-    chosen_indices = rng.choice(len(candidates), size=num_samples, replace=False, p=probs)
+    chosen_indices = rng.choice(len(candidates), size=num_samples, replace=False, p=softmax(probs))
 
+    print(type(candidates))
     return candidates[chosen_indices]
