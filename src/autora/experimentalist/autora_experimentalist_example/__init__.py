@@ -67,7 +67,7 @@ def sample(experiment_data,
     9998           0.5   99.0
     9999           0.5  100.0
     """
-    candidates = all_conditions.iloc[:, 1:].values  # Convert to numpy array
+    candidates = all_conditions.values  # Convert to numpy array
     # Sample candidates based on proximity to existing conditions
     #conditions = None
     #candidates = None #requires ndarray of shape candidates, dimensions
