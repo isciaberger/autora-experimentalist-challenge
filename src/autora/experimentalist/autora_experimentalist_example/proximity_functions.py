@@ -87,7 +87,7 @@ def reweight_flavour(proximity, temperatur=1):
         np.ndarray: Probability distribution over the items 
     """
 
-    scaled= proximity / temperatur
+    scaled= (-proximity) / temperatur
     probs = np.exp(scaled) / np.sum(np.exp(scaled))
 
     return probs
