@@ -60,7 +60,7 @@ def proximity_gaussian_kernels(conditions: np.ndarray, candidates: np.ndarray, s
         return data_normalized, candidates_normalized
     conditions = np.atleast_2d(conditions)
     candidates = np.atleast_2d(candidates)
-    data, candidates = norm(conditions, candidates)
+    #data, candidates = norm(conditions, candidates)
     if conditions.shape[1] != candidates.shape[1]:
         raise ValueError(f"Shape mismatch: conditions.shape = {conditions.shape}, candidates.shape = {candidates.shape}")
 
