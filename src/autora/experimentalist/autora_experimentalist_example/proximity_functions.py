@@ -50,17 +50,16 @@ def proximity_gaussian_kernels(conditions: np.ndarray, candidates: np.ndarray, s
     Returns:
         distances: A 1d array including the distance to the closest condition datapoint for each candidate.
     """
-    #normalize axes
-    def norm(x):
-        x_mean = np.mean(x, axis=1, keepdims=True)
-        x_std = np.std(x, axis=1, keepdims=True)
-        return (x - x_mean) / (x_std + 1e-8)
-    conditions = norm(conditions)
-    candidates = norm(candidates)
-
+    #normalize axes based on data for both conditions and candidates
+    def norm(data, candidates):
+        data_mean = np.mean(data, axis=0)
+        data_std = np.std(data, axis=0)
+        data_std[data_std == 0] = 1  # Avoid division by zero
+        data_normalized, candidates_normalized = (data - data_mean) / data_std, (candidates - data_mean) / data_std
+        return data_normalized, candidates_normalized
     conditions = np.atleast_2d(conditions)
     candidates = np.atleast_2d(candidates)
-
+    data, candidates = norm(conditions, candidates)
     if conditions.shape[1] != candidates.shape[1]:
         raise ValueError(f"Shape mismatch: conditions.shape = {conditions.shape}, candidates.shape = {candidates.shape}")
 
