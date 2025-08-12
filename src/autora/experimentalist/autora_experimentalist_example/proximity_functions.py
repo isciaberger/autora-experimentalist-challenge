@@ -55,7 +55,8 @@ def proximity_gaussian_kernels(conditions: np.ndarray, candidates: np.ndarray, s
         data_mean = np.mean(data, axis=0)
         data_std = np.std(data, axis=0)
         data_std[data_std == 0] = 1  # Avoid division by zero
-        data_normalized, candidates_normalized = (data - data_mean) / data_std, (candidates - data_mean) / data_std
+        data_normalized = (data - data_mean) / data_std
+        candidates_normalized = (candidates - data_mean) / data_std
         return data_normalized, candidates_normalized
     conditions = np.atleast_2d(conditions)
     candidates = np.atleast_2d(candidates)
