@@ -31,7 +31,7 @@ def dist2prox_via_inverse(distances, epsilon=1e-5):
     """
     return 1 / (distances + epsilon)  # shape (c,)
 
-def proximity_gaussian_kernels(conditions: np.ndarray, candidates: np.ndarray, sigma:float=1., metric: str='euclidean') -> np.ndarray:
+def proximity_gaussian_kernels(conditions: np.ndarray, candidates: np.ndarray, sigma:float=0.1, metric: str='euclidean') -> np.ndarray:
     """
     Calculate the minimum Euclidean distance between two vectors.
 
@@ -42,6 +42,13 @@ def proximity_gaussian_kernels(conditions: np.ndarray, candidates: np.ndarray, s
     Returns:
         distances: A 1d array including the distance to the closest condition datapoint for each candidate.
     """
+    #normalize axes
+    def norm(x):
+        x_mean = np.mean(x, axis=1, keepdims=True)
+        x_std = np.std(x, axis=1, keepdims=True)
+        return (x - x_mean) / (x_std + 1e-8)
+    conditions = norm(conditions)
+    candidates = norm(candidates)
     distance_matrix = scipy.spatial.distance.cdist(candidates, conditions, metric=metric)  # shape (c, n)
     def gaussian_kernel(x_dist, sigma):
         #gaussian kernel, x_dist is the distance between mu and x
