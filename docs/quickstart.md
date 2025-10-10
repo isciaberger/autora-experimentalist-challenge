@@ -13,5 +13,5 @@ pip install -U autora["experimentalist-autora-experimentalist-example"]
 
 Check your installation by running:
 ```shell
-python -c "from autora.experimentalist.autora_experimentalist_example import Example"
+python -c "from autora.experimentalist.autora_experimentalist_example import sample_flavour"
 ```
