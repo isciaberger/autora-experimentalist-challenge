@@ -2,7 +2,9 @@
 # UPDATE THIS BEFORE PUBLISHING
 name = "autora_experimentalist_example"
 description = "This is an experimentalist called Sample Flavour."
-authors = [{ name = "FirstName LastName", email = "your@email.de" }]
+authors = [{ name = "Imogen Hüsing, Iscia Berger, Julia Voss, Leon Schmid", email = "your@email.de" }]
+
+
 dynamic = ["version"]
 
 readme = "README.md"
