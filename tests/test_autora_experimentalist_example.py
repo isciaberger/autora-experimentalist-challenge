@@ -1,5 +1,5 @@
 import numpy as np
-from proximity_functions import (
+from src.autora.experimentalist.autora_experimentalist.proximity_functions import (
     min_euclidean_distance,
     dist2prox_via_inverse,
     proximity_gaussian_kernels
