@@ -5,13 +5,6 @@ on:
   merge_group:
   push:
     branches:
-      - mainname: Test with py.test
-
-on:
-  pull_request:
-  merge_group:
-  push:
-    branches:
       - main
 
 
