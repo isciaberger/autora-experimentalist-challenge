@@ -21,5 +21,5 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         cache: "pip"
-    - run: pip install ".[test]"
+    - run: pip install ".[test]" pytest
     - run: pytest --doctest-modules
