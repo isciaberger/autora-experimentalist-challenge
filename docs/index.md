@@ -8,7 +8,7 @@ We simulate experiments in two ground-truth domains:
 
 ---
 
-## 🧪 Overview: Closed-Loop Discovery
+## Overview: Closed-Loop Discovery
 
 Each experiment loop consists of:
 1. **Training theorists** on collected data
@@ -39,11 +39,11 @@ We consider these inputs to:
 
 ---
 
-## 🧪 Sampling Method
+##  Sampling Method
 
 Our experimentalist uses a **proximity-weighted sampling method**, specifically:
 
-### 🌀 Gaussian Proximity Kernel
+### Gaussian Proximity Kernel
 
 For each candidate, we compute its proximity to known conditions using:
 
@@ -65,7 +65,7 @@ Where:
   - Low $T$ → favors closest candidates (exploitation)
   - High $T$ → more uniform selection (exploration)
 
-### ✅ Why this method?
+###  Why this method?
 
 We aim to:
 - Encourage **local refinement** (near known data)
@@ -76,7 +76,7 @@ This makes `sample_flavour` a lightweight and interpretable alternative to more 
 
 ---
 
-## 📊 Experimentalists Compared
+## Experimentalists Compared
 
 | Experimentalist       | Strategy                      |
 |------------------------|-------------------------------|
@@ -93,7 +93,7 @@ Lower MSE = Better scientific model discovery.
 
 ---
 
-## 🧠 Theorists
+##  Theorists
 
 - BMS Regressor (Bayesian)
 - Linear Regression
